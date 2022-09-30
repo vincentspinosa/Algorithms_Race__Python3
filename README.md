@@ -2,7 +2,7 @@
 
 ENGLISH VERSION BELOW
 
-Ce programme fait faire la course à plusieurs algorithmes (développés from scratch), afin de déterminer lequel trie un array le plus vite.
+Ce programme, fait en Python 3.7, fait faire la course à plusieurs algorithmes (développés from scratch), afin de déterminer lequel trie un array le plus vite.
 
 C'est à l'utilisateur d'indiquer le nombre de valeurs contenues dans l'array (les valeurs seront aléatoires).
 
@@ -18,7 +18,7 @@ Le troisième part du début, puis va au milieu. Ensuite, il part de la fin et v
 
 -----------------------
 
-This program races several algorithms (developed from scratch), to determine which one sorts an array the fastest.
+This program, made in Python 3.7, races several algorithms (developed from scratch), to determine which one sorts an array the fastest.
 
 It is up to the user to indicate the number of values contained in the array (the values will be random).
 

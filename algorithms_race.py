@@ -3,9 +3,11 @@
 from random import randint
 import time
 
+
 #CALCUL DE LA VITESSE :
 
 class Temps :
+  
   def __init__(self, fonction, param_f) :
     t1 = time.time()
     fonction(param_f)
@@ -13,19 +15,29 @@ class Temps :
     self.resultat = t2 - t1
     return None
 
+  def __repr__(self) :
+    return "Resultat : % s" % (self.resultat)
+
+  
 #ALGORITHME : (définition)
 
 class Algorithme :
+  
   def __init__(self, nom, fonction) :
     self.nom = nom
     self.fonction = fonction
     return None
 
+  def __repr__(self) :
+    return "Algorithme : % s, Fonction = % s" % (self.nom, self.fonction)
+
 algos = []
+
 
 #COURSE : (définition)
 
 class Init :
+
   def __init__(self) :
     try :
       inpt = int(input('\nEntrez le nombre de valeurs contenues dans l\'array (15 par défaut, min 2, max 150) : '))
@@ -35,6 +47,7 @@ class Init :
       inpt = 2
     elif (inpt > 150) :
       inpt = 150
+    self.input = inpt
     self.array = []
     i = 0
     while (i < inpt) :
@@ -44,7 +57,11 @@ class Init :
       i += 1
     return None
 
+  def __repr__(self) :
+    return "Input : % s \n Array : % s" % (self.input, self.array)
+
 class Course :
+
   def __init__(self) :
     a = Init()
     arrayCpy = a.array.copy()
@@ -65,99 +82,84 @@ class Course :
         meilleur_algo.append(algos[i].nom)
       i += 1
     self.vainqueur = meilleur_algo
-    print("\n% s gagne avec un temps de % s !" % (self.vainqueur, meilleur_res))
+    self.meilleur_temps = meilleur_res
+    print("\n% s gagne avec un temps de % s !" % (self.vainqueur, self.meilleur_temps))
     Nouvelle_Course()
     return None
 
+  def __repr__(self) :
+    return "Vainqueur : % s \n Meilleur temps : % s" % (self.vainqueur, self.meilleur_temps)
+
 class Nouvelle_Course :
+  
   def __init__(self) :
     print("\nVoulez-vous faire une nouvelle course ?")
     print("1 : Oui")
     print("2 : Non")
     try :
-      ipt = int(input("\nEntrez la valeur correspondant à l'action désirée : "))
+      self.ipt = int(input("\nEntrez la valeur correspondant à l'action désirée : "))
     except ValueError :
-      ipt = 3
-    if (ipt == 1) :
+      self.ipt = 3
+    if (self.ipt == 1) :
       Course()
-    elif (ipt == 2) :
+    elif (self.ipt == 2) :
       print("\nAu revoir !")
     else :
       Nouvelle_Course()
     return None
 
+  def __repr__(self) :
+    return "Option choisie : % s" % (self.ipt)
+
+  
 #ALGORITHMES :
 
+def tri(array, depart, fin) :
+  index_boucle = depart
+  fin_boucle = fin
+  if (depart < fin) :
+    while (index_boucle < fin_boucle) :
+      j = index_boucle + 1
+      while (j < fin_boucle) : # inférieur car on commence à 0 hors la longueur commence à 1
+        if (array[j] < array[index_boucle]) :
+          array[index_boucle], array[j] = array[j], array[index_boucle]
+          index_boucle = depart
+          j = index_boucle + 1
+        else :
+          j += 1
+      index_boucle += 1
+    return array
+  elif (depart > fin) :
+    while (index_boucle > fin_boucle) :
+      j = index_boucle - 1
+      while (j > fin_boucle) :
+        if (array[j] > array[index_boucle]) :
+          array[index_boucle], array[j] = array[j], array[index_boucle]
+          index_boucle = depart
+          j = index_boucle - 1
+        else :
+          j -= 1
+      index_boucle -= 1
+    return array
+  else :
+    return array
+
 def tri_simple(array) :
-  i = 0
-  k = int(len(array))
-  while (i < k) :
-    j = i + 1
-    while (j < k) :
-      if (j < k and array[j] < array[i]) :
-        array[i], array[j] = array[j], array[i]
-        i = 0
-        j = 1
-      else :
-        j += 1
-    i += 1
-  return array
+  return tri(array, 0, int(len(array)))
 
 def tri_milieu_vers_debut_fin(array) :
-  a = int(len(array) / 2)
-  i = a
-  while (i > 0) :
-    j = i - 1
-    while (j >= 0) :
-      if (array[j] > array[i]) :
-        array[i], array[j] = array[j], array[i]
-        i = a
-        j = i - 1
-      else :
-        j -= 1
-    i -= 1
-  i = a
-  while (i < (len(array) - 1)) :
-    j = i + 1
-    while (j < len(array)) :
-      if (array[j] < array[i]) :
-        array[i], array[j] = array[j], array[i]
-        i = a
-        j = i + 1
-      else :
-        j += 1
-    i += 1
-  tri_simple(array)
-  return array
+  y = len(array)
+  x = int(y / 2)
+  tri(array, x, 0)
+  tri(array, x, y)
+  return tri(array, 0, y)
 
 def tri_debut_fin_vers_milieu(array) :
   a = len(array)
   b = int(a / 2)
-  i = 0
-  while (i < b ) :
-    j = i + 1
-    while (j <= b) :
-      if (array[j] < array[i]) :
-        array[i], array[j] = array[j], array[i]
-        i = 0
-        j = i + 1
-      else :
-        j += 1
-    i += 1
-  k = int(a - 1)
-  i = k
-  while (i > b) :
-    j = i - 1
-    while (j >= b) :
-      if (array[j] > array[i]) :
-        array[i], array[j] = array[j], array[i]
-        i = k
-        j = i - 1
-      else :
-        j -= 1
-    i -= 1
-  tri_simple(array)
-  return array
+  tri(array, 0, b)
+  tri(array, a - 1, b)
+  return tri(array, 0, a)
 
 Algo_TS = Algorithme('Algo_Tri_Simple', tri_simple)
 algos.append(Algo_TS)
@@ -165,6 +167,8 @@ Algo_M_DF = Algorithme('Algo_Tri_Milieu_Vers_Début_Fin', tri_milieu_vers_debut_
 algos.append(Algo_M_DF)
 Algo_DF_M = Algorithme('Algo_Tri_Début_Fin_Vers_Milieu', tri_debut_fin_vers_milieu)
 algos.append(Algo_DF_M)
+
+
 
 #ACCUEIL :
 
@@ -175,6 +179,7 @@ class Bienvenue :
     print("Ce sera à vous, l'utilisateur, d'indiquer le nombre de valeurs contenues dans l'array à trier.")
     return None
 
+  
 #MAIN :
 
 class Main :
@@ -183,7 +188,7 @@ class Main :
     Course()
     return None
 
+  
 #JEU :
 
 Main()
-

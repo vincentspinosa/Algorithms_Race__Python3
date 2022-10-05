@@ -7,7 +7,7 @@ import time
 #CALCUL DE LA VITESSE :
 
 class Temps :
-  
+
   def __init__(self, fonction, param_f) :
     t1 = time.time()
     fonction(param_f)
@@ -16,20 +16,20 @@ class Temps :
     return None
 
   def __repr__(self) :
-    return "Resultat : % s" % (self.resultat)
+    return f"Resultat : {self.resultat}"
 
-  
+ 
 #ALGORITHME : (définition)
 
 class Algorithme :
-  
+
   def __init__(self, nom, fonction) :
     self.nom = nom
     self.fonction = fonction
     return None
 
   def __repr__(self) :
-    return "Algorithme : % s, Fonction = % s" % (self.nom, self.fonction)
+    return f"Algorithme : {self.nom}, Fonction = {self.fonction}"
 
 algos = []
 
@@ -55,10 +55,11 @@ class Init :
       int(x)
       self.array.append(x)
       i += 1
+    print(f"L'array contient {inpt} valeurs à trier !")
     return None
 
   def __repr__(self) :
-    return "Input : % s \n Array : % s" % (self.input, self.array)
+    return f"Input : {self.input} \n Array : {self.array}"
 
 class Course :
 
@@ -68,13 +69,14 @@ class Course :
     i = 0
     meilleur_res = None
     while (i < len(algos)) :
-      print("\n% s" % (algos[i].nom))
-      print("Array à trier : % s" % (a.array))
+      print('\n')
+      print(f"{algos[i].nom}")
+      print(f"Array à trier : {a.array}")
       print("Tri en cours...")
       resultat = Temps(algos[i].fonction, a.array).resultat
-      print("Résultat : % s" % (a.array))
+      print(f"Résultat : {a.array}")
       a.array = arrayCpy.copy()
-      print("Temps de % s : % s" % (algos[i].nom, resultat))
+      print(f"Temps de {algos[i].nom} : {resultat}")
       if (meilleur_res == None or resultat < meilleur_res) :
         meilleur_res = resultat
         meilleur_algo = [algos[i].nom]
@@ -83,15 +85,15 @@ class Course :
       i += 1
     self.vainqueur = meilleur_algo
     self.meilleur_temps = meilleur_res
-    print("\n% s gagne avec un temps de % s !" % (self.vainqueur, self.meilleur_temps))
+    print('\n')
+    print(f"{self.vainqueur} gagne avec un temps de {self.meilleur_temps} !")
     Nouvelle_Course()
     return None
 
   def __repr__(self) :
-    return "Vainqueur : % s \n Meilleur temps : % s" % (self.vainqueur, self.meilleur_temps)
+    return f"Vainqueur : {self.vainqueur} \n Meilleur temps : {self.meilleur_temps}"
 
 class Nouvelle_Course :
-  
   def __init__(self) :
     print("\nVoulez-vous faire une nouvelle course ?")
     print("1 : Oui")
@@ -109,9 +111,9 @@ class Nouvelle_Course :
     return None
 
   def __repr__(self) :
-    return "Option choisie : % s" % (self.ipt)
+    return f"Option choisie : {self.ipt}"
 
-  
+ 
 #ALGORITHMES :
 
 def tri(array, depart, fin) :
@@ -169,7 +171,6 @@ Algo_DF_M = Algorithme('Algo_Tri_Début_Fin_Vers_Milieu', tri_debut_fin_vers_mil
 algos.append(Algo_DF_M)
 
 
-
 #ACCUEIL :
 
 class Bienvenue :
@@ -188,7 +189,7 @@ class Main :
     Course()
     return None
 
-  
+ 
 #JEU :
 
 Main()

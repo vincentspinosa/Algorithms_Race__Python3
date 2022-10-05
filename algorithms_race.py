@@ -7,7 +7,6 @@ import time
 #CALCUL DE LA VITESSE :
 
 class Temps :
-
   def __init__(self, fonction, param_f) :
     t1 = time.time()
     fonction(param_f)
@@ -22,14 +21,13 @@ class Temps :
 #ALGORITHME : (définition)
 
 class Algorithme :
-
   def __init__(self, nom, fonction) :
     self.nom = nom
     self.fonction = fonction
     return None
 
   def __repr__(self) :
-    return f"Algorithme : {self.nom}, Fonction = {self.fonction}"
+    return f"Algorithme : {self.nom}, Fonction : {self.fonction}"
 
 algos = []
 
@@ -37,7 +35,6 @@ algos = []
 #COURSE : (définition)
 
 class Init :
-
   def __init__(self) :
     try :
       inpt = int(input('\nEntrez le nombre de valeurs contenues dans l\'array (15 par défaut, min 2, max 150) : '))
@@ -62,7 +59,6 @@ class Init :
     return f"Input : {self.input} \n Array : {self.array}"
 
 class Course :
-
   def __init__(self) :
     a = Init()
     arrayCpy = a.array.copy()
@@ -122,7 +118,7 @@ def tri(array, depart, fin) :
   if (depart < fin) :
     while (index_boucle < fin_boucle) :
       j = index_boucle + 1
-      while (j < fin_boucle) : # inférieur car on commence à 0 hors la longueur commence à 1
+      while (j < fin_boucle) : # inférieur car on commence à array[0] hors la longueur commence à 1 si elle existe
         if (array[j] < array[index_boucle]) :
           array[index_boucle], array[j] = array[j], array[index_boucle]
           index_boucle = depart
@@ -149,6 +145,9 @@ def tri(array, depart, fin) :
 def tri_simple(array) :
   return tri(array, 0, int(len(array)))
 
+def tri_arriere(array) :
+  return tri(array, int(len(array) - 1), - 1)
+
 def tri_milieu_vers_debut_fin(array) :
   y = len(array)
   x = int(y / 2)
@@ -163,11 +162,13 @@ def tri_debut_fin_vers_milieu(array) :
   tri(array, a - 1, b)
   return tri(array, 0, a)
 
-Algo_TS = Algorithme('Algo_Tri_Simple', tri_simple)
+Algo_TS = Algorithme('Algorithme_Tri_Simple', tri_simple)
 algos.append(Algo_TS)
-Algo_M_DF = Algorithme('Algo_Tri_Milieu_Vers_Début_Fin', tri_milieu_vers_debut_fin)
+Algo_AR = Algorithme('Algorithme_Tri_Arrière', tri_arriere)
+algos.append(Algo_AR)
+Algo_M_DF = Algorithme('Algorithme_Tri_Milieu_Vers_Début_Fin', tri_milieu_vers_debut_fin)
 algos.append(Algo_M_DF)
-Algo_DF_M = Algorithme('Algo_Tri_Début_Fin_Vers_Milieu', tri_debut_fin_vers_milieu)
+Algo_DF_M = Algorithme('Algorithme_Tri_Début_Fin_Vers_Milieu', tri_debut_fin_vers_milieu)
 algos.append(Algo_DF_M)
 
 
@@ -180,7 +181,7 @@ class Bienvenue :
     print("Ce sera à vous, l'utilisateur, d'indiquer le nombre de valeurs contenues dans l'array à trier.")
     return None
 
-  
+
 #MAIN :
 
 class Main :
@@ -189,7 +190,7 @@ class Main :
     Course()
     return None
 
- 
+
 #JEU :
 
 Main()

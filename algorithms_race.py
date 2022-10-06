@@ -4,6 +4,7 @@ from random import randint
 import time
 import gc
 
+
 #CALCUL DE LA VITESSE :
 
 class Temps :
@@ -152,15 +153,18 @@ def tri_debut_fin_vers_milieu(array) :
   tri(array, a - 1, b)
   return tri(array, 0, a)
 
+
 Algo_TS = Algorithme('Algorithme de Tri Simple', tri_simple)
 Algo_AR = Algorithme('Algorithme de Tri Arrière', tri_arriere)
 Algo_M_DF = Algorithme('Algorithme de Tri Milieu Vers Début Puis Fin', tri_milieu_vers_debut_fin)
 Algo_DF_M = Algorithme('Algorithme de Tri Début et Fin Vers Milieu', tri_debut_fin_vers_milieu)
+#Algo_PUISS_2 = Algorithme('Algorithme Puissance 2', tri_puissance_2)
+
 
 def appendToList(classe, array):
   for obj in gc.get_objects():
-    if isinstance(obj, Algorithme):
-      algos.append(obj)
+    if isinstance(obj, classe):
+      array.append(obj)
   return None
 
 appendToList(Algorithme, algos)

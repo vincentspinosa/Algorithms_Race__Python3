@@ -2,7 +2,7 @@
 
 from random import randint
 import time
-
+import gc
 
 #CALCUL DE LA VITESSE :
 
@@ -47,12 +47,10 @@ class Init :
     self.input = inpt
     self.array = []
     i = 0
-    while (i < inpt) :
-      x = randint(1, 100000)
-      int(x)
+    for _ in range(self.input) :
+      x = int(randint(1, 100000))
       self.array.append(x)
-      i += 1
-    print(f"L'array contient {inpt} valeurs à trier !")
+    print(f"L'array contient {self.input} valeurs à trier !")
     return None
 
   def __repr__(self) :
@@ -66,7 +64,7 @@ class Course :
     meilleur_res = None
     while (i < len(algos)) :
       print('\n')
-      print(f"{algos[i].nom}")
+      print(algos[i].nom)
       print(f"Array à trier : {a.array}")
       print("Tri en cours...")
       resultat = Temps(algos[i].fonction, a.array).resultat
@@ -112,33 +110,25 @@ class Nouvelle_Course :
  
 #ALGORITHMES :
 
+def tri_primitif(array, a, b):
+  while a < b:
+    i = a + 1
+    j = a
+    while i < b:
+      if(array[i] < array[a]):
+        array[i], array[a] = array[a], array[i]
+        a = j
+        i = a + 1
+      else:
+        i += 1
+    a += 1
+  return array
+
 def tri(array, depart, fin) :
-  index_boucle = depart
-  fin_boucle = fin
   if (depart < fin) :
-    while (index_boucle < fin_boucle) :
-      j = index_boucle + 1
-      while (j < fin_boucle) : # inférieur car on commence à array[0] hors la longueur commence à 1 si elle existe
-        if (array[j] < array[index_boucle]) :
-          array[index_boucle], array[j] = array[j], array[index_boucle]
-          index_boucle = depart
-          j = index_boucle + 1
-        else :
-          j += 1
-      index_boucle += 1
-    return array
+    return tri_primitif(array, depart, fin)
   elif (depart > fin) :
-    while (index_boucle > fin_boucle) :
-      j = index_boucle - 1
-      while (j > fin_boucle) :
-        if (array[j] > array[index_boucle]) :
-          array[index_boucle], array[j] = array[j], array[index_boucle]
-          index_boucle = depart
-          j = index_boucle - 1
-        else :
-          j -= 1
-      index_boucle -= 1
-    return array
+    return tri_primitif(array, fin, depart)
   else :
     return array
 
@@ -146,7 +136,7 @@ def tri_simple(array) :
   return tri(array, 0, int(len(array)))
 
 def tri_arriere(array) :
-  return tri(array, int(len(array) - 1), - 1)
+  return tri(array, int(len(array)), - 1)
 
 def tri_milieu_vers_debut_fin(array) :
   y = len(array)
@@ -162,14 +152,18 @@ def tri_debut_fin_vers_milieu(array) :
   tri(array, a - 1, b)
   return tri(array, 0, a)
 
-Algo_TS = Algorithme('Algorithme_Tri_Simple', tri_simple)
-algos.append(Algo_TS)
-Algo_AR = Algorithme('Algorithme_Tri_Arrière', tri_arriere)
-algos.append(Algo_AR)
-Algo_M_DF = Algorithme('Algorithme_Tri_Milieu_Vers_Début_Fin', tri_milieu_vers_debut_fin)
-algos.append(Algo_M_DF)
-Algo_DF_M = Algorithme('Algorithme_Tri_Début_Fin_Vers_Milieu', tri_debut_fin_vers_milieu)
-algos.append(Algo_DF_M)
+Algo_TS = Algorithme('Algorithme de Tri Simple', tri_simple)
+Algo_AR = Algorithme('Algorithme de Tri Arrière', tri_arriere)
+Algo_M_DF = Algorithme('Algorithme de Tri Milieu Vers Début Puis Fin', tri_milieu_vers_debut_fin)
+Algo_DF_M = Algorithme('Algorithme de Tri Début et Fin Vers Milieu', tri_debut_fin_vers_milieu)
+
+def appendToList(classe, array):
+  for obj in gc.get_objects():
+    if isinstance(obj, Algorithme):
+      algos.append(obj)
+  return None
+
+appendToList(Algorithme, algos)
 
 
 #ACCUEIL :
@@ -181,7 +175,7 @@ class Bienvenue :
     print("Ce sera à vous, l'utilisateur, d'indiquer le nombre de valeurs contenues dans l'array à trier.")
     return None
 
-
+ 
 #MAIN :
 
 class Main :
@@ -190,7 +184,7 @@ class Main :
     Course()
     return None
 
-
+ 
 #JEU :
 
 Main()

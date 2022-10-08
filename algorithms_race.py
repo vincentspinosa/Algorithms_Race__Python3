@@ -1,117 +1,112 @@
-# -*- coding: utf-8 -*-
-
 from random import randint
 import time
 import gc
 
 
-#CALCUL DE LA VITESSE :
+#TIMING THE FUNCTION:
 
-class Temps :
-  def __init__(self, fonction, param_f) :
+class Time:
+  def __init__(self, function, function_param):
     t1 = time.time()
-    fonction(param_f)
+    function(function_param)
     t2 = time.time()
-    self.resultat = t2 - t1
+    self.result = t2 - t1
     return None
 
-  def __repr__(self) :
-    return f"Resultat : {self.resultat}"
+  def __repr__(self):
+    return f"Result: {self.result}"
 
- 
-#ALGORITHME : (définition)
 
-class Algorithme :
-  def __init__(self, nom, fonction) :
-    self.nom = nom
-    self.fonction = fonction
+#ALGORITHM: (definition)
+
+class Algorithm:
+  def __init__(self, name, function):
+    self.name = name
+    self.function = function
     return None
 
-  def __repr__(self) :
-    return f"Algorithme : {self.nom}, Fonction : {self.fonction}"
+  def __repr__(self):
+    return f"Algorithm: {self.name}, Function: {self.function}"
 
 algos = []
 
 
-#COURSE : (définition)
+#RACE: (definition)
 
-class Init :
-  def __init__(self) :
-    try :
-      inpt = int(input('\nEntrez le nombre de valeurs contenues dans l\'array (15 par défaut, min 2, max 150) : '))
-    except ValueError :
-      inpt = 15
-    if (inpt < 2) :
-      inpt = 2
-    elif (inpt > 150) :
+class Init:
+  def __init__(self):
+    try:
+      inpt = int(input('\nEnter the number of values contained in the array (150 by default, min 2, max 1200): '))
+    except ValueError:
       inpt = 150
+    if (inpt < 2):
+      inpt = 2
+    elif (inpt > 1200):
+      inpt = 1200
     self.input = inpt
     self.array = []
     i = 0
-    for _ in range(self.input) :
+    for _ in range(self.input):
       x = int(randint(1, 100000))
       self.array.append(x)
-    print(f"L'array contient {self.input} valeurs à trier !")
+    print(f"The array contains {self.input} values to sort!")
     return None
 
-  def __repr__(self) :
-    return f"Input : {self.input} \n Array : {self.array}"
+  def __repr__(self):
+    return f"Input: {self.input}\nArray: {self.array}"
 
-class Course :
-  def __init__(self) :
+class Race:
+  def __init__(self):
     a = Init()
     arrayCpy = a.array.copy()
     i = 0
-    meilleur_res = None
-    while (i < len(algos)) :
-      print('\n')
-      print(algos[i].nom)
-      print(f"Array à trier : {a.array}")
-      print("Tri en cours...")
-      resultat = Temps(algos[i].fonction, a.array).resultat
-      print(f"Résultat : {a.array}")
+    current_best = None
+    for i in range(len(algos)):
+      print(f"\n{algos[i].name}")
+      print(f"Array to sort: {a.array}")
+      print("Sorting in progress...")
+      result = Time(algos[i].function, a.array).result
+      print(f"Result: {a.array}")
       a.array = arrayCpy.copy()
-      print(f"Temps de {algos[i].nom} : {resultat}")
-      if (meilleur_res == None or resultat < meilleur_res) :
-        meilleur_res = resultat
-        meilleur_algo = [algos[i].nom]
-      elif (meilleur_res == resultat) :
-        meilleur_algo.append(algos[i].nom)
-      i += 1
-    self.vainqueur = meilleur_algo
-    self.meilleur_temps = meilleur_res
-    print('\n')
-    print(f"{self.vainqueur} gagne avec un temps de {self.meilleur_temps} !")
-    Nouvelle_Course()
+      print(f"Time of {algos[i].name}: {result}")
+      if (current_best == None or result < current_best):
+        current_best = result
+        best_algo = [algos[i].name]
+      elif (current_best == result):
+        best_algo.append(algos[i].name)
+    self.winner = best_algo
+    self.best_time = current_best
+    print(f"\n{self.winner} wins with a time of {self.best_time}!")
+    New_Race()
     return None
 
-  def __repr__(self) :
-    return f"Vainqueur : {self.vainqueur} \n Meilleur temps : {self.meilleur_temps}"
+  def __repr__(self):
+    return f"Winner: {self.winner} \nBest time: {self.best_time}"
 
-class Nouvelle_Course :
-  def __init__(self) :
-    print("\nVoulez-vous faire une nouvelle course ?")
-    print("1 : Oui")
-    print("2 : Non")
-    try :
-      self.ipt = int(input("\nEntrez la valeur correspondant à l'action désirée : "))
-    except ValueError :
+class New_Race:
+  def __init__(self):
+    print("\nDo you want to do a new race?")
+    print("1: Yes")
+    print("2: No")
+    try:
+      self.ipt = int(input("\nEnter the value corresponding to the desired action: "))
+    except ValueError:
       self.ipt = 3
-    if (self.ipt == 1) :
-      Course()
-    elif (self.ipt == 2) :
-      print("\nAu revoir !")
-    else :
-      Nouvelle_Course()
+    if (self.ipt == 1):
+      Race()
+    elif (self.ipt == 2):
+      print("\nSee you soon!")
+    else:
+      New_Race()
     return None
 
-  def __repr__(self) :
-    return f"Option choisie : {self.ipt}"
+  def __repr__(self):
+    return f"Chosen option: {self.ipt}"
 
- 
-#ALGORITHMES :
 
-def tri_primitif(array, a, b):
+#ALGORITHMS:
+
+def primitive_sort(array, a, b):
   while a < b:
     i = a + 1
     j = a
@@ -125,69 +120,61 @@ def tri_primitif(array, a, b):
     a += 1
   return array
 
-def tri(array, depart, fin) :
-  if (depart < fin) :
-    return tri_primitif(array, depart, fin)
-  elif (depart > fin) :
-    return tri_primitif(array, fin, depart)
-  else :
+def sort(array, start, end):
+  if (start < end):
+    return primitive_sort(array, start, end)
+  elif (start > end):
+    return primitive_sort(array, end, start)
+  else:
     return array
 
-def tri_simple(array) :
-  return tri(array, 0, int(len(array)))
+def simple_sort(array):
+  return sort(array, 0, int(len(array)))
 
-def tri_arriere(array) :
-  return tri(array, int(len(array)), - 1)
+def reverse_sort(array):
+  return sort(array, int(len(array)), - 1)
 
-def tri_milieu_vers_debut_fin(array) :
+def sort_middle_to_start_end(array):
   y = len(array)
   x = int(y / 2)
-  tri(array, x, 0)
-  tri(array, x, y)
-  return tri(array, 0, y)
+  return sort(sort(sort(array, x, 0), x, y), 0, y)
 
-def tri_debut_fin_vers_milieu(array) :
-  a = len(array)
-  b = int(a / 2)
-  tri(array, 0, b)
-  tri(array, a - 1, b)
-  return tri(array, 0, a)
+def sort_start_end_to_middle(array):
+  x = len(array)
+  y = int(x / 2)
+  return sort(sort(sort(array, 0, y), x - 1, y), 0, x)
 
+Algo_SS = Algorithm('Simple Sort Algorithm', simple_sort)
+Algo_RS = Algorithm('Reverse Sort Algorithm', reverse_sort)
+Algo_M_SE = Algorithm('Sort Middle to Start, then Middle to End, then All', sort_middle_to_start_end)
+Algo_SE_M = Algorithm('Sort Start to Middle, then End to Middle, then All', sort_start_end_to_middle)
 
-Algo_TS = Algorithme('Algorithme de Tri Simple', tri_simple)
-Algo_AR = Algorithme('Algorithme de Tri Arrière', tri_arriere)
-Algo_M_DF = Algorithme('Algorithme de Tri Milieu Vers Début Puis Fin', tri_milieu_vers_debut_fin)
-Algo_DF_M = Algorithme('Algorithme de Tri Début et Fin Vers Milieu', tri_debut_fin_vers_milieu)
-
-
-def appendToList(classe, array):
-  for obj in gc.get_objects():
-    if isinstance(obj, classe):
-      array.append(obj)
+def appendToList(class_, array):
+  for i in gc.get_objects():
+    if isinstance(i, class_):
+      array.append(i)
   return None
 
-appendToList(Algorithme, algos)
+appendToList(Algorithm, algos)
 
 
-#ACCUEIL :
+#WELCOME:
 
-class Bienvenue :
-  def __init__(self) :
-    print("Bienvenue dans la course des algorithmes !")
-    print("Dans ce jeu, plusieurs algorithmes ont pour tâche de trier un array contenant des valeurs aléatoires.")
-    print("Ce sera à vous, l'utilisateur, d'indiquer le nombre de valeurs contenues dans l'array à trier.")
-    return None
+def welcome():
+  print("Welcome to the algorithms' race!")
+  print("In this game, several algorithms race to sort an array the fastest.")
+  print("It will be up to you, the user, to indicate the number of values contained in the array to sort.")
+  return None
 
- 
-#MAIN :
 
-class Main :
-  def __init__(self) :
-    Bienvenue()
-    Course()
-    return None
+#MAIN:
 
- 
-#JEU :
+def main():
+  welcome()
+  Race()
+  return None
 
-Main()
+
+#RACE:
+
+main()
